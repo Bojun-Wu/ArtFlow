@@ -96,12 +96,12 @@ glow = Glow(3, args.n_flow, args.n_block, affine=args.affine, conv_lu=not args.n
 # -----------------------resume training------------------------
 if os.path.isfile(args.decoder):
     print("--------loading checkpoint----------")
-    checkpoint = torch.load(args.decoder)
+    checkpoint = torch.load(args.decoder, map_location=device)
     args.start_iter = checkpoint['iter']
     glow.load_state_dict(checkpoint['state_dict'])
     print("=> loaded checkpoint '{}'".format(args.decoder))
 else:
-    print("--------no checkpoint found---------")
+    raise FileNotFoundError("Checkpoint not found: {}".format(args.decoder))
 glow = glow.to(device)
 
 glow.eval()
